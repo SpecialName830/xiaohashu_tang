@@ -7,14 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
-public class BizException implements BizExceptionInterface {
+public class BizException extends RuntimeException {
 
     String errorMessage;
 
     String errorCode;
 
-    public BizException(BizExceptionInterface bizExceptionInterface) {
-        this.errorMessage = bizExceptionInterface.getErrorMessage();
-        this.errorCode = bizExceptionInterface.getErrorCode();
+    public BizException(BaseExceptionInterface baseExceptionInterface) {
+        this.errorMessage = baseExceptionInterface.getErrorMessage();
+        this.errorCode = baseExceptionInterface.getErrorCode();
     }
 }

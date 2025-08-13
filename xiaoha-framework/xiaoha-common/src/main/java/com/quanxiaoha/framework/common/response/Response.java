@@ -1,7 +1,7 @@
 package com.quanxiaoha.framework.common.response;
 
+import com.quanxiaoha.framework.common.exception.BaseExceptionInterface;
 import com.quanxiaoha.framework.common.exception.BizException;
-import com.quanxiaoha.framework.common.exception.BizExceptionInterface;
 import lombok.Data;
 import java.io.Serializable;
 
@@ -50,11 +50,11 @@ public class Response<T> implements Serializable {
         response.setMessage(errorMsg);
         return response;
     }
-    public static <T> Response<T> fail(BizExceptionInterface bizExceptionInterface){
+    public static <T> Response<T> fail(BaseExceptionInterface baseExceptionInterface){
         Response<T> response = new Response<>();
         response.setSuccess(false);
-        response.setMessage(bizExceptionInterface.getErrorMessage());
-        response.setCode(bizExceptionInterface.getErrorCode());
+        response.setMessage(baseExceptionInterface.getErrorMessage());
+        response.setCode(baseExceptionInterface.getErrorCode());
         return response;
     }
     public static <T> Response<T> fail(String errorCode, String errorMsg){

@@ -1,6 +1,6 @@
 package com.quanxiaoha.framework.common.exception;
 
-public interface BizExceptionInterface {
+public interface BaseExceptionInterface {
 
     String getErrorMessage();
 
