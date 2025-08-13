@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
         String errorMsg = sb.toString();
 
         log.warn("{} request error, errorCode: {}, errorMessage: {}", request.getRequestURL(), errorCode, errorMsg);
-        return Response.fail(exception);
+        return Response.fail(errorCode, errorMsg);
     }
 
 
