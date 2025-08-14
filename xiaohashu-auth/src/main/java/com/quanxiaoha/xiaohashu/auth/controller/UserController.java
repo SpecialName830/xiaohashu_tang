@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperationLog(description = "用户登录注册")
-    public Response<?> login(@RequestBody @Validated UserLoginReqVO userLoginReqVO){
+    public Response<String> login(@RequestBody @Validated UserLoginReqVO userLoginReqVO){
         return userService.loginAndRegister(userLoginReqVO);
     }
 }
