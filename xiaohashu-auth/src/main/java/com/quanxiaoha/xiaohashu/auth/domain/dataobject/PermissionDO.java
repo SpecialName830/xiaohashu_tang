@@ -1,40 +1,33 @@
 package com.quanxiaoha.xiaohashu.auth.domain.dataobject;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class UserDO {
-
+@Data
+public class PermissionDO {
     private Long id;
 
-    private String xiaohashuId;
+    private Long parentId;
 
-    private String password;
+    private String name;
 
-    private String nickname;
+    private Byte type;
 
-    private String avatar;
+    private String menuUrl;
 
-    private Date birthday;
+    private String menuIcon;
 
-    private String backgroundImg;
+    private Integer sort;
 
-    private String phone;
-
-    private Integer sex;
+    private String permissionKey;
 
     private Integer status;
-
-    private String introduction;
 
     private LocalDateTime createTime;
 

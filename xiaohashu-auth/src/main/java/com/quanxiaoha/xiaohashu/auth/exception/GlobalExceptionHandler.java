@@ -57,4 +57,12 @@ public class GlobalExceptionHandler {
         return Response.fail(ResponseCodeEnum.SYSTEM_ERROR);
     }
 
+    @ExceptionHandler({IllegalArgumentException.class})
+    @ResponseBody
+    public Response<Object> handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException exception) {
+        String errorCode = ResponseCodeEnum.SYSTEM_ERROR.getErrorCode();
+        log.warn("{} request fail, errorMessage:{}", request.getRequestURL(), exception.getMessage());
+        return Response.fail(errorCode, exception.getMessage());
+    }
+
 }

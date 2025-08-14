@@ -10,31 +10,14 @@ import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class UserDO {
-
+@Data
+public class UserRoleDO {
     private Long id;
 
-    private String xiaohashuId;
+    private Long userId;
 
-    private String password;
-
-    private String nickname;
-
-    private String avatar;
-
-    private Date birthday;
-
-    private String backgroundImg;
-
-    private String phone;
-
-    private Integer sex;
-
-    private Integer status;
-
-    private String introduction;
+    private Long roleId;
 
     private LocalDateTime createTime;
 
