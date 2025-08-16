@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @Slf4j
@@ -67,10 +68,11 @@ public class PushRolePermissions2RedisRunner implements ApplicationRunner {
                         Collectors.toMap(PermissionDO::getId, PermissionDO -> PermissionDO)
                 );
 
-                Map<Long, List<PermissionDO>> roleIdPermissionDOMap = Maps.newHashMap();
+                Map<String, List<String>> roleIdPermissionDOMap = Maps.newHashMap();
 
                 roleDOS.forEach(roleDO -> {
                     Long roleDOId = roleDO.getId();
+                    String roleKey = roleDO.getRoleKey();
                     List<Long> permissionIdList = rolePermissionListMap.get(roleDOId);
                     if (CollUtil.isNotEmpty(permissionIdList)) {
                         List<PermissionDO> permissionDOList = Lists.newArrayList();
@@ -80,13 +82,14 @@ public class PushRolePermissions2RedisRunner implements ApplicationRunner {
                                 permissionDOList.add(permissionDO);
                             }
                         });
-                        roleIdPermissionDOMap.put(roleDOId, permissionDOList);
+                        List<String> permissionKeyList = permissionDOList.stream().map(PermissionDO::getPermissionKey).toList();
+                        roleIdPermissionDOMap.put(roleKey, permissionKeyList);
                     }
                 });
 
-                roleIdPermissionDOMap.forEach((roleID, PermissionDOList) -> {
-                    String rolePermissionsKey = RedisKeyConstants.buildRolePermissionsKey(roleID);
-                    redisTemplate.opsForValue().set(rolePermissionsKey, JsonUtils.toJsonString(PermissionDOList));
+                roleIdPermissionDOMap.forEach((roleKey, permissionKey) -> {
+                    String rolePermissionsKey = RedisKeyConstants.buildRolePermissionsKey(roleKey);
+                    redisTemplate.opsForValue().set(rolePermissionsKey, JsonUtils.toJsonString(permissionKey));
                 });
             }
         }catch (Exception e){

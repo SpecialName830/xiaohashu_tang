@@ -15,11 +15,11 @@ public class RedisKeyConstants {
         return VERIFICATION_CODE_KEY_PREFIX + phone;
     }
 
-    public static String buildUserRoleKey(String phone){
-        return USER_ROLE_KEY_PREFIX + phone;
+    public static String buildUserRoleKey(Long userId){
+        return USER_ROLE_KEY_PREFIX + userId;
     }
 
-    public static String buildRolePermissionsKey(Long roleId){
-        return ROLE_PERMISSION_KEY_PREFIX+roleId;
+    public static String buildRolePermissionsKey(String roleKey){
+        return ROLE_PERMISSION_KEY_PREFIX+roleKey;
     }
 }

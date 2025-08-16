@@ -8,10 +8,7 @@ import com.quanxiaoha.xiaohashu.auth.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -23,7 +20,14 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperationLog(description = "用户登录注册")
-    public Response<String> login(@RequestBody @Validated UserLoginReqVO userLoginReqVO){
+    public Response<String> login(@RequestBody @Validated UserLoginReqVO userLoginReqVO) {
         return userService.loginAndRegister(userLoginReqVO);
+    }
+
+    @PostMapping("/logout")
+    @ApiOperationLog(description = "用户登出操作")
+    public Response<?> logout(@RequestHeader("userId") String userId) {
+        log.info("===> 下游服务获取的用户ID:{}", userId);
+        return userService.logout(Long.valueOf(userId));
     }
 }

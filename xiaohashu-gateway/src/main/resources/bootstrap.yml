@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: xiaohashu-gateway
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: localhost:8848
+        namespace: xiaohashu
+        group: DEFAULT_GROUP

@@ -6,4 +6,6 @@ import jakarta.annotation.Resource;
 
 public interface UserService {
     Response<String> loginAndRegister(UserLoginReqVO userLoginReqVO);
+
+    Response<?> logout(Long userId);
 }
