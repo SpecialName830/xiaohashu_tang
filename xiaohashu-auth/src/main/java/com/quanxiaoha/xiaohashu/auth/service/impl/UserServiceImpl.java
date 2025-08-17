@@ -19,13 +19,17 @@ import com.quanxiaoha.xiaohashu.auth.domain.mapper.UserDOMapper;
 import com.quanxiaoha.xiaohashu.auth.domain.mapper.UserRoleDOMapper;
 import com.quanxiaoha.xiaohashu.auth.enums.LoginTypeEnum;
 import com.quanxiaoha.xiaohashu.auth.enums.ResponseCodeEnum;
+import com.quanxiaoha.xiaohashu.auth.model.vo.user.UpdatePasswordReqVO;
 import com.quanxiaoha.xiaohashu.auth.model.vo.user.UserLoginReqVO;
 import com.quanxiaoha.xiaohashu.auth.service.UserService;
+import com.quanxiaoha.xiaohashu.framework.biz.context.Holder.LoginUserContextHolder;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -55,6 +59,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     RoleDOMapper roleDOMapper;
+
+    @Resource
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Response<String> loginAndRegister(UserLoginReqVO userLoginReqVO) {
@@ -89,7 +96,25 @@ public class UserServiceImpl implements UserService {
                 break;
 
             case PASSWORD_CODE :
-                // todo
+                String password = userLoginReqVO.getPassword();
+                UserDO userDO1 = userDOMapper.selectByPhone(phone);
+
+                // 判断该手机号是否注册
+                if(Objects.isNull(userDO1)){
+                    // 未注册 则直接抛出异常
+                    throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
+                }
+                // 明文密码
+                String password1 = userDO1.getPassword();
+
+                boolean matches = passwordEncoder.matches(password,password1);
+
+                if(!matches){
+                    throw new BizException(ResponseCodeEnum.PHONE_OR_PASSWORD_ERROR);
+                }
+
+                userId = userDO1.getId();
+
                 break;
 
             default:
@@ -103,8 +128,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response<?> logout(Long userId) {
+    public Response<?> logout() {
+        Long userId = LoginUserContextHolder.getUserId();
+        log.info("登出操作:userId:{}", userId);
         StpUtil.logout(userId);
+        return Response.success();
+    }
+
+    @Override
+    public Response<?> updatePassword(UpdatePasswordReqVO updatePasswordReqVO) {
+        Long userId = LoginUserContextHolder.getUserId();
+        String password = updatePasswordReqVO.getNewPassword();
+        String encodePassword  = passwordEncoder.encode(password);
+
+        log.info("===> 更改密码操作userId:{}", userId);
+        UserDO userDO = UserDO.builder()
+                .id(userId)
+                .password(encodePassword)
+                .updateTime(LocalDateTime.now())
+                .build();
+
+        userDOMapper.updateByPrimaryKeySelective(userDO);
+
         return Response.success();
     }
 

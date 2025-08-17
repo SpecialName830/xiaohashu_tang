@@ -1,11 +1,15 @@
 package com.quanxiaoha.xiaohashu.auth.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.quanxiaoha.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.quanxiaoha.framework.common.response.Response;
 import com.quanxiaoha.xiaohashu.auth.domain.mapper.UserDOMapper;
+import com.quanxiaoha.xiaohashu.auth.model.vo.user.UpdatePasswordReqVO;
 import com.quanxiaoha.xiaohashu.auth.model.vo.user.UserLoginReqVO;
 import com.quanxiaoha.xiaohashu.auth.service.UserService;
+import com.quanxiaoha.xiaohashu.framework.biz.context.Holder.LoginUserContextHolder;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +30,21 @@ public class UserController {
 
     @PostMapping("/logout")
     @ApiOperationLog(description = "用户登出操作")
-    public Response<?> logout(@RequestHeader("userId") String userId) {
-        log.info("===> 下游服务获取的用户ID:{}", userId);
-        return userService.logout(Long.valueOf(userId));
+    public Response<?> logout() {
+        return userService.logout();
     }
+
+    @PostMapping("/password/update")
+    @ApiOperationLog(description = "更改密码操作")
+    public Response<?> updatePassword(@Validated @RequestBody UpdatePasswordReqVO updatePasswordReqVO) {
+        return userService.updatePassword(updatePasswordReqVO);
+    }
+
+    @PostMapping("/isLogin")
+    @ApiOperationLog(description = "验证是否登录")
+    public boolean isLogin(){
+        Long userId = LoginUserContextHolder.getUserId();
+        return StpUtil.isLogin(userId);
+    }
+
 }

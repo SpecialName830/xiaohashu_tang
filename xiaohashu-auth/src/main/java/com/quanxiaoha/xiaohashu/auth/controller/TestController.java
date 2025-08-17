@@ -18,18 +18,18 @@ public class TestController {
 
     @GetMapping("/test")
     @ApiOperationLog(description = "测试用例")
-    public Response<String> test(){
+    public Response<String> test() {
         return Response.success();
     }
 
     @GetMapping("/testUser")
     @ApiOperationLog(description = "测试用户")
-    public Response<UserDO> testUser(){
+    public Response<UserDO> testUser() {
         return Response.success();
     }
 
     @GetMapping("/alarm")
-    public Response<?> testAlarm(){
+    public Response<?> testAlarm() {
         return Response.success(alarmInterface.sendMessage());
     }
 
