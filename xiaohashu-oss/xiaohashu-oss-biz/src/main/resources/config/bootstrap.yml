@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: xiaohashu-oss
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        enabled: true
+        namespace: xiaohashu
+        group: DEFAULT_GROUP
+      config:
+        refresh-enabled: true
+        server-addr: localhost:8848
+        namespace: xiaohashu
+        group: DEFAULT_GROUP
+        prefix: ${spring.application.name}
+        file-extension: yaml

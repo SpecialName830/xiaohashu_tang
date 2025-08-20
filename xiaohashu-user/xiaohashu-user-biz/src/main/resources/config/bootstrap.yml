@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: xiaohashu-user
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        enabled: true
+        namespace: xiaohashu
+        group: DEFAULT_GROUP

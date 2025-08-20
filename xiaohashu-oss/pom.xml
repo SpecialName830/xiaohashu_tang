@@ -6,15 +6,24 @@
     <parent>
         <groupId>com.quanxiaoha</groupId>
         <artifactId>xiaohashu_tang</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xiaohashu-oss</artifactId>
+    <packaging>pom</packaging>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <description>对象存储服务</description>
+    <name>${project.artifactId}</name>
+
+    <modules>
+
+        <module>xiaohashu-oss-api</module>
+        <module>xiaohashu-oss-biz</module>
+    </modules>
+
+    <dependencies>
+
+    </dependencies>
+
 
 </project>
